@@ -1,4 +1,4 @@
-package webScrapper.negocio;
+package webScraper.negocio;
 
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
@@ -12,9 +12,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Scrapper {
+public class Scraper {
     public static final String SEPARATOR=";";
-    public static final String QUOTE="\"";
+
     WebClient cliente;
     List<HtmlPage> paginas;
 
