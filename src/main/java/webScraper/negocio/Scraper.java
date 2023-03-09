@@ -4,52 +4,79 @@ import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import webScraper.beans.Franquicia;
+import webScraper.error.FranquiciaExcepction;
+import webScraper.utils.CsvWriterReader;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Scraper {
-    public static final String SEPARATOR=";";
 
     WebClient cliente;
     List<HtmlPage> paginas;
 
+    List<Franquicia> listaFranquicias;
+
     /**
-     *
-     * @throws IOException
+     * Metodo operar
      */
-    public void operar() throws IOException {
-        inicializarCliente();
-        cargaPaginas();
-        obtenerEnlaces();
+    public void operar(String path){
+        try {
+            inicializarFranquicias(path);
+            inicializarCliente();
+            cargaPaginas();
+            obtenerEnlaces();
+            cierraCliente();
+        }catch (FranquiciaExcepction e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void inicializarFranquicias(String path) throws FranquiciaExcepction {
+        setListaFranquicias(CsvWriterReader.readCSV(path));
     }
 
     /**
      *
      */
-    public void obtenerEnlaces() {
-        inicializarCliente();
-
+    public void obtenerEnlaces() throws FranquiciaExcepction {
         try {
-            for(HtmlPage page : paginas) {
-                List<String> linksout = new ArrayList<>();
-                List<HtmlAnchor> links = page.getAnchors();
-                for (HtmlAnchor link : links) {
-                    if (link.getHrefAttribute().contains("twitter") || link.getHrefAttribute().contains("instagram") || link.getHrefAttribute().contains("facebook")) {
-                        System.out.println("Encontrado");
-                        linksout.add(link.getHrefAttribute());
+            for (Franquicia franquicia : listaFranquicias) {
+                //List<String> linksout = new ArrayList<>();
+
+                List<HtmlAnchor> linksInicio = franquicia.getPaginaInicio().getAnchors();
+                List<HtmlAnchor> linksContacto = franquicia.getPaginaContacto().getAnchors();
+
+                for (HtmlAnchor link : linksInicio) {
+                    if (link.getHrefAttribute().contains("twitter")) {
+                        franquicia.addNumEnlacesInicioTwitter();
                     }
-                    String href = link.getHrefAttribute();
-                    System.out.println("Link: " + href);
+                    if(link.getHrefAttribute().contains("instagram")){
+                        franquicia.addNumEnlacesInicioInstagram();
+                    }
+                    if(link.getHrefAttribute().contains("facebook")){
+                        franquicia.addNumEnlacesInicioFacebook();
+                    }
                 }
+
+                for (HtmlAnchor link : linksContacto) {
+                    if (link.getHrefAttribute().contains("twitter")) {
+                        franquicia.addNumEnlacesContactoTwitter();
+                    }
+                    if(link.getHrefAttribute().contains("instagram")){
+                        franquicia.addNumEnlacesContactoInstagram();
+                    }
+                    if(link.getHrefAttribute().contains("facebook")){
+                        franquicia.addNumEnlacesContactoFacebook();
+                    }
+                }
+            System.out.println("OK: ");
             }
 
         } catch (Exception e) {
-            System.out.println("An error occurred: " + e);
+            throw new FranquiciaExcepction(e.getMessage());
         }
     }
 
@@ -57,7 +84,7 @@ public class Scraper {
      *
      */
     private void inicializarCliente() {
-       cliente = new WebClient(BrowserVersion.CHROME);
+        cliente = new WebClient(BrowserVersion.CHROME);
 
         //Elimia datos innecesarios
         cliente.getOptions().setCssEnabled(false);
@@ -67,44 +94,36 @@ public class Scraper {
     }
 
     /**
-     *
-     * @throws IOException
+     * @throws FranquiciaExcepction
      */
-    private void cargaPaginas() throws IOException {
-
-
-        BufferedReader br = null;
-
-        try {
-
-            br =new BufferedReader(new FileReader(""));
-            String line = br.readLine();
-            while (null!=line) {
-                String [] fields = line.split(SEPARATOR);
-                System.out.println(Arrays.toString(fields));
-
-                System.out.println(Arrays.toString(fields));
-
-                line = br.readLine();
+    private void cargaPaginas() throws FranquiciaExcepction {
+        this.paginas = new ArrayList<>();
+        for (Franquicia franquicia : listaFranquicias) {
+            try {
+                franquicia.setPaginaInicio(cliente.getPage(franquicia.getEnlaceInicio()));
+                franquicia.setPaginaContacto(cliente.getPage(franquicia.getEnlaceContacto()));
+            } catch (IOException e) {
+                throw new FranquiciaExcepction(e.getMessage());
             }
 
-        } catch (Exception e) {
 
-        } finally {
-            if (null!=br) {
-                br.close();
-            }
         }
-
     }
 
 
     /**
      *
      */
-    private void cierraCliente(){
+    private void cierraCliente() {
         cliente.getCurrentWindow().getJobManager().removeAllJobs();
         cliente.close();
     }
 
+    public List<Franquicia> getListaFranquicias() {
+        return listaFranquicias;
+    }
+
+    public void setListaFranquicias(List<Franquicia> listaFranquicias) {
+        this.listaFranquicias = listaFranquicias;
+    }
 }
