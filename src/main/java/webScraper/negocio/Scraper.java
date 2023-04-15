@@ -5,8 +5,8 @@ import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import webScraper.beans.Franquicia;
-import webScraper.error.FranquiciaExcepction;
-import webScraper.utils.CsvWriterReader;
+import webScraper.error.FranquiciaException;
+import webScraper.utils.WriterReader;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,19 +29,20 @@ public class Scraper {
             cargaPaginas();
             obtenerEnlaces();
             cierraCliente();
-        }catch (FranquiciaExcepction e) {
+            generaExcel();
+        }catch (FranquiciaException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void inicializarFranquicias(String path) throws FranquiciaExcepction {
-        setListaFranquicias(CsvWriterReader.readCSV(path));
+    private void inicializarFranquicias(String path) throws FranquiciaException {
+        setListaFranquicias(WriterReader.readCSV(path));
     }
 
     /**
      *
      */
-    public void obtenerEnlaces() throws FranquiciaExcepction {
+    private void obtenerEnlaces() throws FranquiciaException {
         try {
             for (Franquicia franquicia : listaFranquicias) {
                 //List<String> linksout = new ArrayList<>();
@@ -76,8 +77,12 @@ public class Scraper {
             }
 
         } catch (Exception e) {
-            throw new FranquiciaExcepction(e.getMessage());
+            throw new FranquiciaException(e.getMessage());
         }
+    }
+
+    private void generaExcel(){
+        WriterReader.writeExcel(listaFranquicias);
     }
 
     /**
@@ -94,16 +99,16 @@ public class Scraper {
     }
 
     /**
-     * @throws FranquiciaExcepction
+     * @throws FranquiciaException
      */
-    private void cargaPaginas() throws FranquiciaExcepction {
+    private void cargaPaginas() throws FranquiciaException {
         this.paginas = new ArrayList<>();
         for (Franquicia franquicia : listaFranquicias) {
             try {
                 franquicia.setPaginaInicio(cliente.getPage(franquicia.getEnlaceInicio()));
                 franquicia.setPaginaContacto(cliente.getPage(franquicia.getEnlaceContacto()));
             } catch (IOException e) {
-                throw new FranquiciaExcepction(e.getMessage());
+                throw new FranquiciaException(e.getMessage());
             }
 
 

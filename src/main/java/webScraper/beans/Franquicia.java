@@ -165,4 +165,16 @@ public class Franquicia {
     public void addNumEnlacesContactoInstagram(){
         setNumEnlacesContactoInstagram(getNumEnlacesContactoInstagram()+1);
     }
+
+    public int getEnlacesTwitter(){
+        return getNumEnlacesContactoTwitter()+getNumEnlacesInicioTwitter();
+    }
+    public int getEnlacesInstagram(){
+        return getNumEnlacesContactoInstagram()+getNumEnlacesInicioInstagram();
+    }
+
+    public int getEnlacesFacebook(){
+        return getNumEnlacesContactoFacebook()+getNumEnlacesInicioFacebook();
+    }
+
 }
