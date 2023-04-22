@@ -24,7 +24,12 @@ public class WriterReader {
     private static final String SEPARADOR_FRANQUICIAS = ";";
     private static final String SEPARADOR_DATOS = ",";
 
-    public static void writeExcel(List<Franquicia> franquicias){
+    /**
+     *  escribe excel de salida
+     * @param franquicias
+     * @throws FranquiciaException
+     */
+    public static void writeExcel(List<Franquicia> franquicias) throws FranquiciaException {
         Workbook libro = new XSSFWorkbook();
         final String nombreArchivo = "Franquicias.xlsx";
         Sheet hoja = libro.createSheet("Resultados");
@@ -41,12 +46,16 @@ public class WriterReader {
             libro.close();
             System.out.println("Libro guardado correctamente");
         } catch (FileNotFoundException ex) {
-            System.out.println("Error de filenotfound");
+            throw new FranquiciaException(ex.getMessage());
         } catch (IOException ex) {
-            System.out.println("Error de IOException");
+            throw new FranquiciaException(ex.getMessage());
         }
     }
 
+    /**
+     * Crea cabecera de excel
+     * @param hoja
+     */
     private static void crearCabecera(Sheet hoja) {
         //Cabecera
         Row primeraFila = hoja.createRow(0);
@@ -61,7 +70,11 @@ public class WriterReader {
         enlacesInstagram.setCellValue("Número de enlaces a Instagram");
     }
 
-
+    /**
+     * rellena fila con franquicias
+     * @param hoja
+     * @param franquicias
+     */
     private static void rellenarFilas(Sheet hoja, List<Franquicia> franquicias) {
         int num_fila = 0;
         for(Franquicia f : franquicias){

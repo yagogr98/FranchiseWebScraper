@@ -22,25 +22,28 @@ public class Scraper {
     /**
      * Metodo operar
      */
-    public void operar(String path){
-        try {
+    public void operar(String path) throws FranquiciaException {
             inicializarFranquicias(path);
             inicializarCliente();
             cargaPaginas();
             obtenerEnlaces();
             cierraCliente();
             generaExcel();
-        }catch (FranquiciaException e) {
-            throw new RuntimeException(e);
-        }
+
     }
 
+    /**
+     * inicializa lista de granquicias
+     * @param path
+     * @throws FranquiciaException
+     */
     private void inicializarFranquicias(String path) throws FranquiciaException {
         setListaFranquicias(WriterReader.readCSV(path));
     }
 
     /**
-     *
+     * Obtiene enlaces de paginas de franquicias
+     * @throws FranquiciaException
      */
     private void obtenerEnlaces() throws FranquiciaException {
         try {
@@ -81,12 +84,16 @@ public class Scraper {
         }
     }
 
-    private void generaExcel(){
+    /**
+     * Genera excel
+     * @throws FranquiciaException
+     */
+    private void generaExcel() throws FranquiciaException {
         WriterReader.writeExcel(listaFranquicias);
     }
 
     /**
-     *
+     * inicializa cliente
      */
     private void inicializarCliente() {
         cliente = new WebClient(BrowserVersion.CHROME);
@@ -117,17 +124,25 @@ public class Scraper {
 
 
     /**
-     *
+     * cierra cliente
      */
     private void cierraCliente() {
         cliente.getCurrentWindow().getJobManager().removeAllJobs();
         cliente.close();
     }
 
+    /**
+     *
+     * @return lista de franquicias
+     */
     public List<Franquicia> getListaFranquicias() {
         return listaFranquicias;
     }
 
+    /**
+     *
+     * @param listaFranquicias
+     */
     public void setListaFranquicias(List<Franquicia> listaFranquicias) {
         this.listaFranquicias = listaFranquicias;
     }
