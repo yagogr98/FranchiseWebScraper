@@ -1,7 +1,6 @@
 package webScraper.negocio;
 
 import com.gargoylesoftware.htmlunit.BrowserVersion;
-import com.gargoylesoftware.htmlunit.Page;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
 import webScraper.beans.Franquicia;
@@ -11,11 +10,8 @@ import webScraper.utils.WriterReader;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.logging.*;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class Scraper {
@@ -24,7 +20,7 @@ public class Scraper {
     List<HtmlPage> paginas;
 
     List<Franquicia> listaFranquicias;
-    private final static Logger LOGGER = Logger.getLogger("negocio.Scraper");;
+    private final static Logger LOGGER = Logger.getLogger("negocio.Scraper");
 
     private final String ENLACE_AEF = "https://www.franquiciadores.com/buscador-de-franquicias/";
     private final String LINK_CLASS_AEF = "vc_gitem-link";
@@ -34,10 +30,15 @@ public class Scraper {
      */
     public void operar(String path) throws FranquiciaException {
         initializeLog();
-        //inicializarFranquicias(path);
+        //
+
         LOGGER.info(" ---- INICIANDO ----");
         inicializarCliente();
-        cargarFranquicias();
+        if(!path.isEmpty()){
+            inicializarFranquiciasCSV(path);
+        }else{
+            cargarFranquiciasAEF();
+        }
         cargarPaginas();
         obtenerEnlaces();
         cierraCliente();
@@ -48,11 +49,11 @@ public class Scraper {
 
 
     /**
-     * inicializa lista de granquicias
+     * inicializa lista de franquicias desde un CSV
      * @param path
      * @throws FranquiciaException
      */
-    private void inicializarFranquicias(String path) throws FranquiciaException {
+    private void inicializarFranquiciasCSV(String path) throws FranquiciaException {
         setListaFranquicias(WriterReader.readCSV(path));
     }
 
@@ -125,8 +126,8 @@ public class Scraper {
         cliente.getOptions().setThrowExceptionOnFailingStatusCode(false);
         cliente.getOptions().setThrowExceptionOnScriptError(false);
         cliente.getOptions().setPrintContentOnFailingStatusCode(false);
-        cliente.setJavaScriptTimeout(20000);
-        cliente.getOptions().setTimeout(20000);
+        cliente.setJavaScriptTimeout(10000);
+        cliente.getOptions().setTimeout(10000);
         LOGGER.info(" ---- FIN INICIALIZAR CLIENTE ----");
     }
 
@@ -136,22 +137,23 @@ public class Scraper {
     private void cargarPaginas() throws FranquiciaException {
         LOGGER.info(" ---- INICIO cargarPaginas() ----");
         this.paginas = new ArrayList<>();
+        int i=0;
         for (Franquicia franquicia : listaFranquicias) {
-
+            i++;
             LOGGER.info(" ---- CARGANDO DATOS FRANQUICIA:" + franquicia.getNombre() +  "----");
+                try {
+                    if (Validator.validateURL(franquicia.getEnlaceInicio())) {
+                        LOGGER.info(" ---- CARGANDO DATOS FRANQUICIA:" + franquicia.getNombre() + " URL INICIO: " + franquicia.getEnlaceInicio() + "----");
 
-            try {
-                if(Validator.validateURL(franquicia.getEnlaceInicio())){
-                    LOGGER.info(" ---- CARGANDO DATOS FRANQUICIA:" + franquicia.getNombre() + " URL INICIO: " + franquicia.getEnlaceInicio() + "----");
-                    franquicia.setPaginaInicio(cliente.getPage(franquicia.getEnlaceInicio()));
+                        franquicia.setPaginaInicio(cliente.getPage(franquicia.getEnlaceInicio()));
+                    }
+                    if (Validator.validateURL(franquicia.getEnlaceContacto())) {
+                        LOGGER.info(" ---- CARGANDO DATOS FRANQUICIA:" + franquicia.getNombre() + " URL CONTACTO: " + franquicia.getEnlaceInicio() + "----");
+                        franquicia.setPaginaContacto(cliente.getPage(franquicia.getEnlaceContacto()));
+                    }
+                } catch (IOException e) {
+                    throw new FranquiciaException(e.getMessage());
                 }
-                if(Validator.validateURL(franquicia.getEnlaceContacto())) {
-                    LOGGER.info(" ---- CARGANDO DATOS FRANQUICIA:" + franquicia.getNombre() + " URL CONTACTO: " + franquicia.getEnlaceInicio() + "----");
-                    franquicia.setPaginaContacto(cliente.getPage(franquicia.getEnlaceContacto()));
-                }
-            } catch (IOException e) {
-                throw new FranquiciaException(e.getMessage());
-            }
 
             LOGGER.info(" ---- FIN cargarPaginas() ----");
         }
@@ -159,7 +161,7 @@ public class Scraper {
     /**
      * @throws FranquiciaException
      */
-    private void cargarFranquicias() throws FranquiciaException {
+    private void cargarFranquiciasAEF() throws FranquiciaException {
         LOGGER.info(" ---- INICIO cargarFranquicias() ----");
         try {
             List<Franquicia> franquiciasLocal = new ArrayList<Franquicia>();
@@ -174,15 +176,14 @@ public class Scraper {
                     final HtmlAnchor enlace = aef_franquicia.getFirstByXPath("//td/a");
                     if(enlace!=null){
                         franquiciaTemporal.setEnlaceInicio(enlace.getHrefAttribute());
+                        franquiciasLocal.add(franquiciaTemporal);
                     }
-                    franquiciasLocal.add(franquiciaTemporal);
+
                 }
             }
-            List<Franquicia> listaSalida = franquiciasLocal.stream()
-                    .collect(Collectors.toSet())
-                    .stream()
-                    .collect(Collectors.toList());
-            setListaFranquicias(listaSalida);
+            // Se eliminan duplicidades
+            setListaFranquicias(franquiciasLocal.stream().distinct().collect(Collectors.toList()));
+
         } catch (MalformedURLException ex) {
             throw new FranquiciaException(ex.getMessage());
         } catch (IOException ex) {

@@ -2,6 +2,8 @@ package webScraper.beans;
 
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
+import java.util.Objects;
+
 public class Franquicia {
     private String nombre;
     private String enlaceInicio;
@@ -270,4 +272,25 @@ public class Franquicia {
         return getNumEnlacesContactoFacebook()+getNumEnlacesInicioFacebook();
     }
 
+    /**
+     *
+     * @param franquicia parametro
+     * @return Igual o no
+     */
+    @Override
+    public boolean equals(Object franquicia) {
+        if (this == franquicia) return true;
+        if (franquicia == null || getClass() != franquicia.getClass()) return false;
+        Franquicia that = (Franquicia) franquicia;
+        return nombre.equals(that.nombre) && Objects.equals(enlaceInicio, that.enlaceInicio) && Objects.equals(enlaceContacto, that.enlaceContacto);
+    }
+
+    /**
+     *
+     * @return hashCode
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(nombre, enlaceInicio, enlaceContacto);
+    }
 }
