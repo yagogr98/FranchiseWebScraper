@@ -20,6 +20,7 @@ public class Scraper {
     List<HtmlPage> paginas;
 
     List<Franquicia> listaFranquicias;
+    List<Franquicia> listaFranquiciasError;
     private final static Logger LOGGER = Logger.getLogger("negocio.Scraper");
 
     private final String ENLACE_AEF = "https://www.franquiciadores.com/buscador-de-franquicias/";
@@ -110,7 +111,7 @@ public class Scraper {
      * @throws FranquiciaException
      */
     private void generaExcel() throws FranquiciaException {
-        WriterReader.writeExcel(listaFranquicias);
+        WriterReader.writeExcel(listaFranquicias,listaFranquiciasError);
     }
 
     /**
@@ -138,6 +139,7 @@ public class Scraper {
         LOGGER.info(" ---- INICIO cargarPaginas() ----");
         this.paginas = new ArrayList<>();
         int i=0;
+        List<Franquicia> franquiciasLocalConErrores = new ArrayList<Franquicia>();
         for (Franquicia franquicia : listaFranquicias) {
             i++;
             LOGGER.info(" ---- CARGANDO DATOS FRANQUICIA:" + franquicia.getNombre() +  "----");
@@ -147,9 +149,11 @@ public class Scraper {
 
                         franquicia.setPaginaInicio(cliente.getPage(franquicia.getEnlaceInicio()));
                     }
-                    if (Validator.validateURL(franquicia.getEnlaceContacto())) {
+                    else if (Validator.validateURL(franquicia.getEnlaceContacto())) {
                         LOGGER.info(" ---- CARGANDO DATOS FRANQUICIA:" + franquicia.getNombre() + " URL CONTACTO: " + franquicia.getEnlaceInicio() + "----");
                         franquicia.setPaginaContacto(cliente.getPage(franquicia.getEnlaceContacto()));
+                    }else{
+                        franquiciasLocalConErrores.add(franquicia);
                     }
                 } catch (IOException e) {
                     throw new FranquiciaException(e.getMessage());
@@ -157,6 +161,10 @@ public class Scraper {
 
             LOGGER.info(" ---- FIN cargarPaginas() ----");
         }
+        List<Franquicia> modifiable = new ArrayList<>(listaFranquicias);
+        modifiable.removeAll(franquiciasLocalConErrores);
+        listaFranquicias = modifiable;
+        listaFranquiciasError =  franquiciasLocalConErrores;
     }
     /**
      * @throws FranquiciaException
@@ -164,6 +172,7 @@ public class Scraper {
     private void cargarFranquiciasAEF() throws FranquiciaException {
         LOGGER.info(" ---- INICIO cargarFranquicias() ----");
         try {
+
             List<Franquicia> franquiciasLocal = new ArrayList<Franquicia>();
             HtmlPage aef = cliente.getPage(ENLACE_AEF);
             List<HtmlAnchor> links =aef.getAnchors() ;

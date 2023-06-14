@@ -23,12 +23,14 @@ public class WriterReader {
      * @param franquicias
      * @throws FranquiciaException
      */
-    public static void writeExcel(List<Franquicia> franquicias) throws FranquiciaException {
+    public static void writeExcel(List<Franquicia> franquicias, List<Franquicia> franquiciasConErrores) throws FranquiciaException {
         libro = new XSSFWorkbook();
         final String nombreArchivo = "Franquicias.xlsx";
         Sheet hoja = libro.createSheet("Resultados");
         crearCabecera(hoja);
         rellenarFilas(hoja, franquicias);
+        crearCabeceraError(hoja,franquicias.size());
+        rellenarFilasErrores(hoja,franquiciasConErrores, franquicias.size());
 
         File directory = new File(".");
         String path = directory.getAbsolutePath();
@@ -146,6 +148,78 @@ public class WriterReader {
         estilo.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         return estilo;
     }
+
+
+
+    /**
+     * Crea cabecera de excel
+     *
+     * @param hoja
+     */
+    private static void crearCabeceraError(Sheet hoja,int franquicias) {
+        //Estilo
+        //Estilo
+        CellStyle estilo = libro.createCellStyle();
+        estilo.setAlignment(HorizontalAlignment.CENTER);
+        Font font = libro.createFont();
+
+        font.setBold(true);
+        font.setFontHeightInPoints((short) 15);
+        font.setColor(IndexedColors.WHITE.index);
+        estilo.setFont(font);
+        estilo.setAlignment(HorizontalAlignment.CENTER);
+        estilo.setVerticalAlignment(VerticalAlignment.CENTER);
+        estilo.setFillForegroundColor(IndexedColors.ORANGE.index);
+        estilo.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+        //Cabecera
+        Row primeraFila = hoja.createRow(franquicias+3);
+        Cell nombre = primeraFila.createCell(0);
+        nombre.setCellValue("Errores:");
+        nombre.setCellStyle(estilo);
+        hoja.autoSizeColumn(0);
+
+    }
+
+
+    /**
+     * rellena filas con franquicias que no han podido cargar
+     *
+     * @param hoja
+     * @param franquiciasErrores
+     */
+    private static void rellenarFilasErrores(Sheet hoja, List<Franquicia> franquiciasErrores, int numeroTotal) {
+        int num_fila = numeroTotal +3;
+        CellStyle estilo = estiloCuerpoError();
+
+        for (Franquicia f : franquiciasErrores) {
+            num_fila++;
+            Row fila = hoja.createRow(num_fila);
+            Cell nombre = fila.createCell(0);
+            nombre.setCellStyle(estilo);
+            nombre.setCellValue(f.getNombre());
+        }
+        hoja.autoSizeColumn(0);
+
+    }
+
+    private static CellStyle estiloCuerpoError() {
+        //Estilo
+        CellStyle estilo = libro.createCellStyle();
+        estilo.setAlignment(HorizontalAlignment.LEFT);
+        Font font = libro.createFont();
+
+        font.setFontHeightInPoints((short) 13);
+        font.setColor(IndexedColors.DARK_RED.getIndex());
+        font.setBold(true);
+        estilo.setFont(font);
+        estilo.setVerticalAlignment(VerticalAlignment.CENTER);
+
+        estilo.setFillForegroundColor(IndexedColors.LIGHT_ORANGE.getIndex());
+        estilo.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        return estilo;
+    }
+
 
     /**
      * Lee ficheros CSV y los transforma en listado de franquicias

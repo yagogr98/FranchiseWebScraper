@@ -12,7 +12,7 @@ public class WebScraperMain {
     public static void main(String[] args) {
             Scraper scraper = new Scraper();
         try {
-            scraper.operar("");
+            scraper.operar("franquicias.csv");
         } catch (FranquiciaException e) {
             Logger.getGlobal().severe(e.getMessage());
         }
