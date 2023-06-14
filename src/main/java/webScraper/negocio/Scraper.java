@@ -5,11 +5,12 @@ import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
 import webScraper.beans.Franquicia;
 import webScraper.error.FranquiciaException;
+import webScraper.utils.Constants;
+import webScraper.utils.ProgressBar;
 import webScraper.utils.Validator;
 import webScraper.utils.WriterReader;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.*;
 import java.util.logging.*;
 import java.util.stream.Collectors;
@@ -21,107 +22,96 @@ public class Scraper {
 
     List<Franquicia> listaFranquicias;
     List<Franquicia> listaFranquiciasError;
-    private final static Logger LOGGER = Logger.getLogger("negocio.Scraper");
 
-    private final String ENLACE_AEF = "https://www.franquiciadores.com/buscador-de-franquicias/";
-    private final String LINK_CLASS_AEF = "vc_gitem-link";
+    private Logger log;
+
+    public Scraper(Logger log){
+        setLog(log);
+    }
+
+
 
     /**
      * Metodo operar
+     * Gestiona todas las operaciones de la App
+     * @param opcion opcion a ejecutar
+     * @param path path al archivo
+     * @throws FranquiciaException error
      */
-    public void operar(String path) throws FranquiciaException {
-        initializeLog();
-        //
+    public void operar(String opcion, String path) throws FranquiciaException {
 
-        LOGGER.info(" ---- INICIANDO ----");
+
         inicializarCliente();
-        if(!path.isEmpty()){
+        if(opcion.equals(Constants.LECTURA_LISTA)){
             inicializarFranquiciasCSV(path);
-        }else{
+            cargarPaginas();
+            obtenerEnlaces();
+            generaExcel();
+        }else if (opcion.equals(Constants.GENERACION_LISTA)){
             cargarFranquiciasAEF();
+            WriterReader.writeCSV(listaFranquicias, log);
+        } else{
+            cargarFranquiciasAEF();
+            cargarPaginas();
+            obtenerEnlaces();
+            generaExcel();
         }
-        cargarPaginas();
-        obtenerEnlaces();
         cierraCliente();
-        generaExcel();
-        LOGGER.info(" ---- FINALIZADO ----");
+
 
     }
 
 
     /**
      * inicializa lista de franquicias desde un CSV
-     * @param path
-     * @throws FranquiciaException
+     * @param path path al CSV
+     * @throws FranquiciaException fallo al leer csv
      */
     private void inicializarFranquiciasCSV(String path) throws FranquiciaException {
-        setListaFranquicias(WriterReader.readCSV(path));
+        setListaFranquicias(WriterReader.readCSV(path,this.log));
     }
 
 
     /**
      * Obtiene enlaces de paginas de franquicias
-     * @throws FranquiciaException
      */
-    private void obtenerEnlaces() throws FranquiciaException {
-        LOGGER.info(" ---- INICIO obtenerEnlaces() ----");
-        try {
-            for (Franquicia franquicia : listaFranquicias) {
-                LOGGER.info(" ---- OBTENIENDO ENLACES:"  + franquicia.getNombre() + "----");
+    private void obtenerEnlaces(){
 
+            for (Franquicia franquicia : listaFranquicias) {
                 //List<String> linksout = new ArrayList<>();
                 if(Validator.isNotNull(franquicia.getPaginaInicio())) {
                     List<HtmlAnchor> linksInicio = franquicia.getPaginaInicio().getAnchors();
                     for (HtmlAnchor link : linksInicio) {
-                        if (link.getHrefAttribute().contains("twitter")) {
+                        if(link.getHrefAttribute().contains(Constants.TWITTER))  {
                             franquicia.addNumEnlacesInicioTwitter();
                         }
-                        if(link.getHrefAttribute().contains("instagram")){
+                        if(link.getHrefAttribute().contains(Constants.INSTAGRAM)){
                             franquicia.addNumEnlacesInicioInstagram();
                         }
-                        if(link.getHrefAttribute().contains("facebook")){
+                        if(link.getHrefAttribute().contains(Constants.FACEBOOK)){
                             franquicia.addNumEnlacesInicioFacebook();
-                        }
-                    }
-                }
-                if(Validator.isNotNull(franquicia.getPaginaContacto())) {
-                    List<HtmlAnchor> linksContacto = franquicia.getPaginaContacto().getAnchors();
-                    for (HtmlAnchor link : linksContacto) {
-                        if (link.getHrefAttribute().contains("twitter")) {
-                            franquicia.addNumEnlacesContactoTwitter();
-                        }
-                        if(link.getHrefAttribute().contains("instagram")){
-                            franquicia.addNumEnlacesContactoInstagram();
-                        }
-                        if(link.getHrefAttribute().contains("facebook")){
-                            franquicia.addNumEnlacesContactoFacebook();
                         }
                     }
                 }
             }
 
-        } catch (Exception e) {
-            throw new FranquiciaException(e.getMessage());
         }
-        LOGGER.info(" ---- FIN obtenerEnlaces() ----");
-    }
 
     /**
      * Genera excel
-     * @throws FranquiciaException
+     * @throws FranquiciaException fallo al generar excel
      */
     private void generaExcel() throws FranquiciaException {
-        WriterReader.writeExcel(listaFranquicias,listaFranquiciasError);
+        WriterReader.writeExcel(listaFranquicias,listaFranquiciasError, getLog());
     }
 
     /**
      * inicializa cliente
      */
     private void inicializarCliente() {
-        LOGGER.info(" ---- INICIALIZANDO CLIENTE  ----");
         cliente = new WebClient(BrowserVersion.CHROME);
-        java.util.logging.Logger.getLogger("com.gargoylesoftware.htmlunit").setLevel(java.util.logging.Level.OFF);
-        java.util.logging.Logger.getLogger("org.apache.http").setLevel(java.util.logging.Level.OFF);
+        java.util.logging.Logger.getLogger(Constants.LOG_HTMLUNIT).setLevel(java.util.logging.Level.OFF);
+        java.util.logging.Logger.getLogger(Constants.LOG_APACHE_HTTP).setLevel(java.util.logging.Level.OFF);
         //Elimia datos innecesarios
         cliente.getOptions().setCssEnabled(false);
         cliente.getOptions().setThrowExceptionOnFailingStatusCode(false);
@@ -129,60 +119,66 @@ public class Scraper {
         cliente.getOptions().setPrintContentOnFailingStatusCode(false);
         cliente.setJavaScriptTimeout(10000);
         cliente.getOptions().setTimeout(10000);
-        LOGGER.info(" ---- FIN INICIALIZAR CLIENTE ----");
     }
 
     /**
-     * @throws FranquiciaException
+     * Carga páginas de franquicias.
+     * @throws FranquiciaException fallo al cargar paginas
      */
     private void cargarPaginas() throws FranquiciaException {
-        LOGGER.info(" ---- INICIO cargarPaginas() ----");
+        log.info("Iniciando analisis de franquicias.");
         this.paginas = new ArrayList<>();
-        int i=0;
-        List<Franquicia> franquiciasLocalConErrores = new ArrayList<Franquicia>();
+
+        List<Franquicia> franquiciasLocalConErrores = new ArrayList<>();
+        ProgressBar progressBar = new ProgressBar("Analizando franquicias", listaFranquicias.size());
         for (Franquicia franquicia : listaFranquicias) {
-            i++;
-            LOGGER.info(" ---- CARGANDO DATOS FRANQUICIA:" + franquicia.getNombre() +  "----");
+
+            progressBar.getSumaTotal();
                 try {
                     if (Validator.validateURL(franquicia.getEnlaceInicio())) {
-                        LOGGER.info(" ---- CARGANDO DATOS FRANQUICIA:" + franquicia.getNombre() + " URL INICIO: " + franquicia.getEnlaceInicio() + "----");
 
                         franquicia.setPaginaInicio(cliente.getPage(franquicia.getEnlaceInicio()));
                     }
                     else if (Validator.validateURL(franquicia.getEnlaceContacto())) {
-                        LOGGER.info(" ---- CARGANDO DATOS FRANQUICIA:" + franquicia.getNombre() + " URL CONTACTO: " + franquicia.getEnlaceInicio() + "----");
                         franquicia.setPaginaContacto(cliente.getPage(franquicia.getEnlaceContacto()));
                     }else{
                         franquiciasLocalConErrores.add(franquicia);
                     }
                 } catch (IOException e) {
-                    throw new FranquiciaException(e.getMessage());
+                    throw new FranquiciaException("ERROR: al cargar pagina de " + franquicia.getNombre());
                 }
 
-            LOGGER.info(" ---- FIN cargarPaginas() ----");
+
         }
         List<Franquicia> modifiable = new ArrayList<>(listaFranquicias);
         modifiable.removeAll(franquiciasLocalConErrores);
         listaFranquicias = modifiable;
         listaFranquiciasError =  franquiciasLocalConErrores;
+        log.info("Analisis de franquicias finalizado");
     }
     /**
-     * @throws FranquiciaException
+     * Carga listado de franquicias del directorio de la AEF.
+     * @throws FranquiciaException fallo al leer del directorio
      */
     private void cargarFranquiciasAEF() throws FranquiciaException {
-        LOGGER.info(" ---- INICIO cargarFranquicias() ----");
+        log.info("Iniciando carga de franquicias.");
         try {
 
-            List<Franquicia> franquiciasLocal = new ArrayList<Franquicia>();
-            HtmlPage aef = cliente.getPage(ENLACE_AEF);
+            List<Franquicia> franquiciasLocal = new ArrayList<>();
+            HtmlPage aef = cliente.getPage(Constants.ENLACE_AEF);
             List<HtmlAnchor> links =aef.getAnchors() ;
-            for (HtmlAnchor link : links) {
-                if (link.getAttribute("class").contains(LINK_CLASS_AEF)){
-                    Franquicia franquiciaTemporal = new Franquicia();
-                    franquiciaTemporal.setNombre(link.getAttribute("title"));
 
+            ProgressBar progressBar = new ProgressBar("Cargando Franquicias");
+
+            for (HtmlAnchor link : links) {
+
+                if (link.getAttribute("class").contains(Constants.LINK_CLASS_AEF)){
+                    Franquicia franquiciaTemporal = new Franquicia();
+                    franquiciaTemporal.setNombre(link.getAttribute(Constants.TITLE_HTML));
+                    progressBar.getSumaTotal();
                     HtmlPage aef_franquicia = cliente.getPage(link.getHrefAttribute());
-                    final HtmlAnchor enlace = aef_franquicia.getFirstByXPath("//td/a");
+                    final HtmlAnchor enlace = aef_franquicia.getFirstByXPath(Constants.SEPARADOR_FRANQUICIAS_XPATH);
+                    progressBar.getSumaTotal();
                     if(enlace!=null){
                         franquiciaTemporal.setEnlaceInicio(enlace.getHrefAttribute());
                         franquiciasLocal.add(franquiciaTemporal);
@@ -193,23 +189,19 @@ public class Scraper {
             // Se eliminan duplicidades
             setListaFranquicias(franquiciasLocal.stream().distinct().collect(Collectors.toList()));
 
-        } catch (MalformedURLException ex) {
-            throw new FranquiciaException(ex.getMessage());
         } catch (IOException ex) {
-            throw new FranquiciaException(ex.getMessage());
+            throw new FranquiciaException("ERROR: No se pudieron cargar franquicias de la AEF");
         }
-        LOGGER.info(" ---- FIN cargarFranquicias() ----");
-    }
+        log.info("Franquicias cargadas.");
+            }
 
 
     /**
      * cierra cliente
      */
     private void cierraCliente() {
-        LOGGER.info(" ---- INICIO cierraCliente() ----");
         cliente.getCurrentWindow().getJobManager().removeAllJobs();
         cliente.close();
-        LOGGER.info(" ---- FIN cierraCliente() ----");
 
     }
 
@@ -223,24 +215,29 @@ public class Scraper {
 
     /**
      *
-     * @param listaFranquicias
+     * @param listaFranquicias listado de franquicias
      */
     public void setListaFranquicias(List<Franquicia> listaFranquicias) {
         this.listaFranquicias = Collections.unmodifiableList(new ArrayList<>(listaFranquicias));
     }
 
-    private static void initializeLog() {
-        Handler consoleHandler = new ConsoleHandler();
-        Handler fileHandler = null;
-        try {
-            fileHandler = new FileHandler("./FranchiseWebScrapper.log", false);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+    /**
+     * Devuelve el Logger
+     * @return logger
+     */
+    public Logger getLog() {
+        return log;
+    }
+
+    /**
+     *
+     * @param log a utilizar
+     *
+     */
+    public void setLog(Logger log) {
+        if(log!=null){
+            this.log=log;
         }
-        LOGGER.addHandler(consoleHandler);
-        LOGGER.addHandler(fileHandler);
-        consoleHandler.setLevel(Level.ALL);
-        fileHandler.setLevel(Level.ALL);
     }
 
 }

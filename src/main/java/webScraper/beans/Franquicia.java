@@ -30,14 +30,13 @@ public class Franquicia {
     /**
      * Constructor
      *
-     * @param nombre
-     * @param enlaceInicio
-     * @param enlaceContacto
+     * @param nombre nombre de la franquicia
+     * @param enlaceInicio url a la web
      */
-    public Franquicia(String nombre, String enlaceInicio, String enlaceContacto) {
+    public Franquicia(String nombre, String enlaceInicio) {
         setNombre(nombre);
         setEnlaceInicio(enlaceInicio);
-        setEnlaceContacto(enlaceContacto);
+
     }
 
     /**
@@ -48,7 +47,7 @@ public class Franquicia {
     }
 
     /**
-     * @param enlaceContacto
+     * @param enlaceContacto url a la web
      */
     public void setEnlaceContacto(String enlaceContacto) {
         this.enlaceContacto = enlaceContacto;
@@ -62,7 +61,7 @@ public class Franquicia {
     }
 
     /**
-     * @param enlaceInicio
+     * @param enlaceInicio url a la web
      */
     public void setEnlaceInicio(String enlaceInicio) {
         this.enlaceInicio = enlaceInicio;
@@ -76,7 +75,7 @@ public class Franquicia {
     }
 
     /**
-     * @param nombre
+     * @param nombre nombre de la franquicia
      */
     public void setNombre(String nombre) {
         this.nombre = nombre;
@@ -106,7 +105,7 @@ public class Franquicia {
 
     /**
      *
-     * @param numEnlacesContactoFacebook
+     * @param numEnlacesContactoFacebook numero de enlaces a red social
      */
     public void setNumEnlacesContactoFacebook(int numEnlacesContactoFacebook) {
         this.numEnlacesContactoFacebook = numEnlacesContactoFacebook;
@@ -114,7 +113,7 @@ public class Franquicia {
 
     /**
      *
-     * @param numEnlacesContactoInstagram
+     * @param numEnlacesContactoInstagram numero de enlaces a red social
      */
     public void setNumEnlacesContactoInstagram(int numEnlacesContactoInstagram) {
         this.numEnlacesContactoInstagram = numEnlacesContactoInstagram;
@@ -122,7 +121,7 @@ public class Franquicia {
 
     /**
      *
-     * @param numEnlacesContactoTwitter
+     * @param numEnlacesContactoTwitter numero de enlaces a red social
      */
     public void setNumEnlacesContactoTwitter(int numEnlacesContactoTwitter) {
         this.numEnlacesContactoTwitter = numEnlacesContactoTwitter;
@@ -130,7 +129,7 @@ public class Franquicia {
 
     /**
      *
-     * @return
+     * @return numero de enlaces a red social
      */
     public int getNumEnlacesInicioFacebook() {
         return numEnlacesInicioFacebook;
@@ -138,7 +137,7 @@ public class Franquicia {
 
     /**
      *
-     * @return
+     * @return numero de enlaces a red social
      */
     public int getNumEnlacesInicioInstagram() {
         return numEnlacesInicioInstagram;
@@ -146,7 +145,7 @@ public class Franquicia {
 
     /**
      *
-     * @return
+     * @return numero de enlaces a red social
      */
     public int getNumEnlacesInicioTwitter() {
         return numEnlacesInicioTwitter;
@@ -154,7 +153,7 @@ public class Franquicia {
 
     /**
      *
-     * @param numEnlacesInicioFacebook
+     * @param numEnlacesInicioFacebook numero de enlaces a red social
      */
     public void setNumEnlacesInicioFacebook(int numEnlacesInicioFacebook) {
         this.numEnlacesInicioFacebook = numEnlacesInicioFacebook;
@@ -162,7 +161,7 @@ public class Franquicia {
 
     /**
      *
-     * @param numEnlacesInicioInstagram
+     * @param numEnlacesInicioInstagram numero de enlaces a red social
      */
     public void setNumEnlacesInicioInstagram(int numEnlacesInicioInstagram) {
         this.numEnlacesInicioInstagram = numEnlacesInicioInstagram;
@@ -170,7 +169,7 @@ public class Franquicia {
 
     /**
      *
-     * @param numEnlacesInicioTwitter
+     * @param numEnlacesInicioTwitter numero de enlaces a red social
      */
     public void setNumEnlacesInicioTwitter(int numEnlacesInicioTwitter) {
         this.numEnlacesInicioTwitter = numEnlacesInicioTwitter;
@@ -178,7 +177,7 @@ public class Franquicia {
 
     /**
      *
-     * @return
+     * @return numero de enlaces a red social
      */
     public HtmlPage getPaginaContacto() {
         return paginaContacto;
@@ -186,7 +185,7 @@ public class Franquicia {
 
     /**
      *
-     * @return
+     * @return numero de enlaces a red social
      */
     public HtmlPage getPaginaInicio() {
         return paginaInicio;
@@ -194,7 +193,7 @@ public class Franquicia {
 
     /**
      *
-     * @param paginaContacto
+     * @param paginaContacto numero de enlaces a red social
      */
     public void setPaginaContacto(HtmlPage paginaContacto) {
         this.paginaContacto = paginaContacto;
@@ -202,7 +201,7 @@ public class Franquicia {
 
     /**
      *
-     * @param paginaInicio
+     * @param paginaInicio numero de enlaces a red social
      */
     public void setPaginaInicio(HtmlPage paginaInicio) {
         this.paginaInicio = paginaInicio;

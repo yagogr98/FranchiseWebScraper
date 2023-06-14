@@ -1,6 +1,5 @@
 package webScraper.utils;
 
-import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import webScraper.beans.Franquicia;
 import webScraper.error.FranquiciaException;
@@ -8,22 +7,22 @@ import webScraper.error.FranquiciaException;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class WriterReader {
 
-    private static final String SEPARADOR_FRANQUICIAS = ";";
-    private static final String SEPARADOR_DATOS = ",";
+
     private static Workbook libro;
 
     /**
      * escribe excel de salida
      *
-     * @param franquicias
-     * @throws FranquiciaException
+     * @param franquicias lista
+     * @throws FranquiciaException error al escribir excel
      */
-    public static void writeExcel(List<Franquicia> franquicias, List<Franquicia> franquiciasConErrores) throws FranquiciaException {
+    public static void writeExcel(List<Franquicia> franquicias, List<Franquicia> franquiciasConErrores, Logger logger) throws FranquiciaException {
         libro = new XSSFWorkbook();
         final String nombreArchivo = "Franquicias.xlsx";
         Sheet hoja = libro.createSheet("Resultados");
@@ -40,18 +39,18 @@ public class WriterReader {
             outputStream = new FileOutputStream(pathSalida);
             libro.write(outputStream);
             libro.close();
-            System.out.println("Libro guardado correctamente");
+            logger.info("Archivo exportado correctamente");
         } catch (FileNotFoundException ex) {
-            throw new FranquiciaException(ex.getMessage());
+            throw new FranquiciaException("ERROR: Archivo no encontrado");
         } catch (IOException ex) {
-            throw new FranquiciaException(ex.getMessage());
+            throw new FranquiciaException("ERROR: No se pudo completar el archivo Excel de salida");
         }
     }
 
     /**
      * Crea cabecera de excel
      *
-     * @param hoja
+     * @param hoja hoja excel
      */
     private static void crearCabecera(Sheet hoja) {
         //Estilo
@@ -100,8 +99,8 @@ public class WriterReader {
     /**
      * rellena fila con franquicias
      *
-     * @param hoja
-     * @param franquicias
+     * @param hoja excel
+     * @param franquicias lista
      */
     private static void rellenarFilas(Sheet hoja, List<Franquicia> franquicias) {
         int num_fila = 0;
@@ -154,7 +153,7 @@ public class WriterReader {
     /**
      * Crea cabecera de excel
      *
-     * @param hoja
+     * @param hoja excel
      */
     private static void crearCabeceraError(Sheet hoja,int franquicias) {
         //Estilo
@@ -185,8 +184,8 @@ public class WriterReader {
     /**
      * rellena filas con franquicias que no han podido cargar
      *
-     * @param hoja
-     * @param franquiciasErrores
+     * @param hoja excel
+     * @param franquiciasErrores lista
      */
     private static void rellenarFilasErrores(Sheet hoja, List<Franquicia> franquiciasErrores, int numeroTotal) {
         int num_fila = numeroTotal +3;
@@ -229,10 +228,13 @@ public class WriterReader {
      * Todas las franquicias iran separadas por ";"
      * s
      *
-     * @param path
+     * @param path ubicacion fichero
+     * @param log logger
      */
-    public static List<Franquicia> readCSV(String path) throws FranquiciaException {
-        List<Franquicia> franquiciasOut = new ArrayList<Franquicia>();
+    public static List<Franquicia> readCSV(String path, Logger log) throws FranquiciaException {
+
+        log.info("Leyendo archivo .csv.");
+        List<Franquicia> franquiciasOut = new ArrayList<>();
         BufferedReader br = null;
 
         try {
@@ -241,16 +243,16 @@ public class WriterReader {
             String line = br.readLine();
             while (null != line) {
                 //Se separan todas las franquicias
-                String[] franquicias = line.split(SEPARADOR_FRANQUICIAS);
+                String[] franquicias = line.split(Constants.SEPARADOR_FRANQUICIAS);
 
                 //Se recorren todas las franquicias
                 for (String franquiciaCampos : franquicias) {
                     //Se separan datos de franquicia
-                    String[] datosFranquicias = franquiciaCampos.split(SEPARADOR_DATOS);
-                    if (datosFranquicias.length == 3) {
-                        if (Validator.validateURL(datosFranquicias[1]) || Validator.validateURL(datosFranquicias[2])) {
+                    String[] datosFranquicias = franquiciaCampos.split(Constants.SEPARADOR_DATOS);
+                    if (datosFranquicias.length == 2) {
+                        if (Validator.validateURL(datosFranquicias[1])) {
                             //Correcto
-                            Franquicia franquiciaTemporal = new Franquicia(datosFranquicias[0], datosFranquicias[1], datosFranquicias[2]);
+                            Franquicia franquiciaTemporal = new Franquicia(datosFranquicias[0], datosFranquicias[1]);
                             franquiciasOut.add(franquiciaTemporal);
                         }
                     }
@@ -258,31 +260,33 @@ public class WriterReader {
                 line = br.readLine();
             }
 
-        } catch (Exception e) {
-            throw new FranquiciaException(e.getMessage());
+        } catch (FileNotFoundException e) {
+            throw new FranquiciaException("ERROR: No se pudo encontrar el fichero.");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         } finally {
             if (null != br) {
                 try {
                     br.close();
                 } catch (IOException e) {
-                    throw new FranquiciaException(e.getMessage());
+                    throw new FranquiciaException("ERROR: El fichero está abierto o es inaccesible.");
                 }
             }
         }
+        log.info("Fin lectura archivo .csv.");
         return franquiciasOut;
     }
 
     /**
      * Escribe listado de franquicias en un CSV
      * El CSV  estará compuesto por "nombre Franquicia",
-     * "enlace pagina de inicio",
-     * "enlace pagina de contacto" sin comillas
+     * "enlace pagina de inicio"
      * Todas las franquicias iran separadas por ";"
-     * s
      *
      * @param franquicias lista de franquicias
      */
-    public static void writeCSV(List<Franquicia> franquicias) throws FranquiciaException {
+    public static void writeCSV(List<Franquicia> franquicias, Logger log) throws FranquiciaException {
+        log.info("Escribiendo archivo .csv.");
         //Iniciamos CSV
         File csvFile = new File("franquicias.csv");
         try {
@@ -291,17 +295,16 @@ public class WriterReader {
 
             for (Franquicia franquicia : franquicias) {
                 //Creamos linea con los datos de la franquicia
-                StringBuilder linea = new StringBuilder();
-                linea.append(franquicia.getNombre() + SEPARADOR_DATOS + franquicia.getEnlaceInicio()
-                        + SEPARADOR_DATOS + franquicia.getEnlaceContacto() + SEPARADOR_FRANQUICIAS);
+                String linea = franquicia.getNombre() + Constants.SEPARADOR_DATOS + franquicia.getEnlaceInicio()
+                        + Constants.SEPARADOR_FRANQUICIAS;
                 //escribimos linea
-                fileWriter.write(linea.toString());
+                fileWriter.write(linea);
             }
 
             fileWriter.close();
         } catch (IOException e) {
-            throw new FranquiciaException(e.getMessage());
+            throw new FranquiciaException("ERROR: El fichero está abierto o es inaccesible.");
         }
-
+        log.info("Fin escritura archivo .csv.");
     }
 }
