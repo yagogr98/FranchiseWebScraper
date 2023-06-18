@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class WriterReader {
-
+    private final static Logger LOGGER = Logger.getLogger(WriterReader.class.getName());
 
     private static Workbook libro;
 
@@ -22,7 +22,8 @@ public class WriterReader {
      * @param franquicias lista
      * @throws FranquiciaException error al escribir excel
      */
-    public static void writeExcel(List<Franquicia> franquicias, List<Franquicia> franquiciasConErrores, Logger logger) throws FranquiciaException {
+    public static void writeExcel(List<Franquicia> franquicias, List<Franquicia> franquiciasConErrores) throws FranquiciaException {
+       LOGGER.info("Iniciando escritura Excel");
         libro = new XSSFWorkbook();
         final String nombreArchivo = "Franquicias.xlsx";
         Sheet hoja = libro.createSheet("Resultados");
@@ -39,7 +40,7 @@ public class WriterReader {
             outputStream = new FileOutputStream(pathSalida);
             libro.write(outputStream);
             libro.close();
-            logger.info("Archivo exportado correctamente");
+            LOGGER.info("Archivo exportado correctamente");
         } catch (FileNotFoundException ex) {
             throw new FranquiciaException("ERROR: Archivo no encontrado");
         } catch (IOException ex) {
@@ -229,11 +230,10 @@ public class WriterReader {
      * s
      *
      * @param path ubicacion fichero
-     * @param log logger
      */
-    public static List<Franquicia> readCSV(String path, Logger log) throws FranquiciaException {
+    public static List<Franquicia> readCSV(String path) throws FranquiciaException {
 
-        log.info("Leyendo archivo .csv.");
+        LOGGER.info("Leyendo archivo .csv.");
         List<Franquicia> franquiciasOut = new ArrayList<>();
         BufferedReader br = null;
 
@@ -273,7 +273,7 @@ public class WriterReader {
                 }
             }
         }
-        log.info("Fin lectura archivo .csv.");
+        LOGGER.info("Fin lectura archivo .csv.");
         return franquiciasOut;
     }
 
@@ -285,8 +285,8 @@ public class WriterReader {
      *
      * @param franquicias lista de franquicias
      */
-    public static void writeCSV(List<Franquicia> franquicias, Logger log) throws FranquiciaException {
-        log.info("Escribiendo archivo .csv.");
+    public static void writeCSV(List<Franquicia> franquicias) throws FranquiciaException {
+        LOGGER.info("Escribiendo archivo .csv.");
         //Iniciamos CSV
         File csvFile = new File("franquicias.csv");
         try {
@@ -305,6 +305,6 @@ public class WriterReader {
         } catch (IOException e) {
             throw new FranquiciaException("ERROR: El fichero está abierto o es inaccesible.");
         }
-        log.info("Fin escritura archivo .csv.");
+        LOGGER.info("Fin escritura archivo .csv.");
     }
 }

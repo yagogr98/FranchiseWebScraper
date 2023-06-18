@@ -12,10 +12,10 @@ import java.util.logging.*;
  *
  */
 public class WebScraperMain {
-    private final static Logger LOGGER = Logger.getLogger("main.java.webScrapper");
+    private final static Logger LOGGER = Logger.getLogger(WebScraperMain.class.getName());
     public static void main(String[] args) {
         initializeLog();
-        Scraper scraper = new Scraper(LOGGER);
+        Scraper scraper = new Scraper();
         try {
             System.out.println(mensajeBienvenida());
             String param1;
@@ -33,7 +33,7 @@ public class WebScraperMain {
 
                     entradaEscaner = new Scanner(System.in);
                     String param2 = entradaEscaner.nextLine();
-                    scraper.operar(Constants.GENERACION_LISTA, param2);
+                    scraper.operar(Constants.LECTURA_LISTA, param2);
                     break;
                 default:
                     System.out.println("Entrada no valida");
@@ -71,6 +71,8 @@ public class WebScraperMain {
     private static void initializeLog() {
         Handler consoleHandler = new ConsoleHandler();
         Handler fileHandler;
+        //System.setProperty("log4j2.configurationFile","./path_to_the_log4j2_config_file/log4j2.xml");
+
 
         LOGGER.setUseParentHandlers(false);
         Handler[] handlers = LOGGER.getHandlers();
@@ -86,7 +88,7 @@ public class WebScraperMain {
         }
         LOGGER.addHandler(consoleHandler);
         LOGGER.addHandler(fileHandler);
-        consoleHandler.setLevel(Level.SEVERE);
+        consoleHandler.setLevel(Level.ALL);
         fileHandler.setLevel(Level.ALL);
     }
 

@@ -17,19 +17,15 @@ import java.util.stream.Collectors;
 
 public class Scraper {
 
+    private final static Logger LOGGER = Logger.getLogger(Scraper.class.getName());
     WebClient cliente;
     List<HtmlPage> paginas;
 
     List<Franquicia> listaFranquicias;
     List<Franquicia> listaFranquiciasError;
 
-    private Logger log;
-
-    public Scraper(Logger log){
-        setLog(log);
+    public Scraper(){
     }
-
-
 
     /**
      * Metodo operar
@@ -49,7 +45,7 @@ public class Scraper {
             generaExcel();
         }else if (opcion.equals(Constants.GENERACION_LISTA)){
             cargarFranquiciasAEF();
-            WriterReader.writeCSV(listaFranquicias, log);
+            WriterReader.writeCSV(listaFranquicias);
         } else{
             cargarFranquiciasAEF();
             cargarPaginas();
@@ -68,7 +64,7 @@ public class Scraper {
      * @throws FranquiciaException fallo al leer csv
      */
     private void inicializarFranquiciasCSV(String path) throws FranquiciaException {
-        setListaFranquicias(WriterReader.readCSV(path,this.log));
+        setListaFranquicias(WriterReader.readCSV(path));
     }
 
 
@@ -102,7 +98,7 @@ public class Scraper {
      * @throws FranquiciaException fallo al generar excel
      */
     private void generaExcel() throws FranquiciaException {
-        WriterReader.writeExcel(listaFranquicias,listaFranquiciasError, getLog());
+        WriterReader.writeExcel(listaFranquicias,listaFranquiciasError);
     }
 
     /**
@@ -126,7 +122,7 @@ public class Scraper {
      * @throws FranquiciaException fallo al cargar paginas
      */
     private void cargarPaginas() throws FranquiciaException {
-        log.info("Iniciando analisis de franquicias.");
+        LOGGER.info("Iniciando analisis de franquicias.");
         this.paginas = new ArrayList<>();
 
         List<Franquicia> franquiciasLocalConErrores = new ArrayList<>();
@@ -154,14 +150,14 @@ public class Scraper {
         modifiable.removeAll(franquiciasLocalConErrores);
         listaFranquicias = modifiable;
         listaFranquiciasError =  franquiciasLocalConErrores;
-        log.info("Analisis de franquicias finalizado");
+        LOGGER.info("Analisis de franquicias finalizado");
     }
     /**
      * Carga listado de franquicias del directorio de la AEF.
      * @throws FranquiciaException fallo al leer del directorio
      */
     private void cargarFranquiciasAEF() throws FranquiciaException {
-        log.info("Iniciando carga de franquicias.");
+        LOGGER.info("Iniciando carga de franquicias.");
         try {
 
             List<Franquicia> franquiciasLocal = new ArrayList<>();
@@ -192,7 +188,7 @@ public class Scraper {
         } catch (IOException ex) {
             throw new FranquiciaException("ERROR: No se pudieron cargar franquicias de la AEF");
         }
-        log.info("Franquicias cargadas.");
+        LOGGER.info("Franquicias cargadas.");
             }
 
 
@@ -219,25 +215,6 @@ public class Scraper {
      */
     public void setListaFranquicias(List<Franquicia> listaFranquicias) {
         this.listaFranquicias = Collections.unmodifiableList(new ArrayList<>(listaFranquicias));
-    }
-
-    /**
-     * Devuelve el Logger
-     * @return logger
-     */
-    public Logger getLog() {
-        return log;
-    }
-
-    /**
-     *
-     * @param log a utilizar
-     *
-     */
-    public void setLog(Logger log) {
-        if(log!=null){
-            this.log=log;
-        }
     }
 
 }
