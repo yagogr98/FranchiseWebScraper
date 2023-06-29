@@ -4,7 +4,7 @@ import webScraper.error.FranquiciaException;
 import webScraper.negocio.Scraper;
 import webScraper.utils.Constants;
 
-import java.io.IOException;
+
 import java.util.Scanner;
 import java.util.logging.*;
 
@@ -12,7 +12,7 @@ import java.util.logging.*;
  *
  */
 public class WebScraperMain {
-    private final static Logger LOGGER = Logger.getLogger(WebScraperMain.class.getName());
+    private final static Logger LOGGER = Logger.getGlobal();
     public static void main(String[] args) {
         initializeLog();
         Scraper scraper = new Scraper();
@@ -70,9 +70,6 @@ public class WebScraperMain {
      */
     private static void initializeLog() {
         Handler consoleHandler = new ConsoleHandler();
-        Handler fileHandler;
-        //System.setProperty("log4j2.configurationFile","./path_to_the_log4j2_config_file/log4j2.xml");
-
 
         LOGGER.setUseParentHandlers(false);
         Handler[] handlers = LOGGER.getHandlers();
@@ -81,15 +78,9 @@ public class WebScraperMain {
             if(handler.getClass() == ConsoleHandler.class)
                 LOGGER.removeHandler(handler);
         }
-        try {
-            fileHandler = new FileHandler("./FranchiseWebScrapper.log", false);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+
         LOGGER.addHandler(consoleHandler);
-        LOGGER.addHandler(fileHandler);
         consoleHandler.setLevel(Level.ALL);
-        fileHandler.setLevel(Level.ALL);
     }
 
 }

@@ -1,0 +1,47 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="WebScrapper:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/WebScrapper_jar</output-path>
+    <root id="archive" name="WebScrapper.jar">
+      <element id="module-output" name="WebScrapper.main" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-text/1.10.0/3363381aef8cef2dbc1023b3e3a9433b08b64e01/commons-text-1.10.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.9.2/fed843581520eac594bc36bb4b0f55e7b947dda9/junit-jupiter-api-5.9.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.sourceforge.htmlunit/neko-htmlunit/2.70.0/987545beef6b20ddb01c12acc18d2481fe2f16a5/neko-htmlunit-2.70.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.poi/poi-ooxml-lite/5.2.3/db113c8e9051b0ff967f4911fa20336c8325a7c5/poi-ooxml-lite-5.2.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-io/9.4.50.v20221201/df7cea38eaf86021e66455d5f6cc1ab5a04475c0/jetty-io-9.4.50.v20221201.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.11.0/a2503f302b11ebde7ebc3df41daebe0e4eea3689/commons-io-2.11.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.zaxxer/SparseBitSet/1.2/8467c813d442837fcaeddbc42cf5c5359fab4933/SparseBitSet-1.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.2/4bfc12adfe4842bf07b657f0369c4cb522955686/commons-logging-1.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.opentest4j/opentest4j/1.2.0/28c11eb91f9b6d8e200631d46e20a7f407f2a046/opentest4j-1.2.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.5.14/1194890e6f56ec29177673f2f12d0b8e627dec98/httpclient-4.5.14.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.xmlbeans/xmlbeans/5.1.1/48a369df0eccb509d46203104e4df9cb00f0f68b/xmlbeans-5.1.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.9.2/40aeef2be7b04f96bb91e8b054affc28b7c7c935/junit-platform-engine-1.9.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.sourceforge.htmlunit/htmlunit-core-js/2.70.0/666c2b4265b9280a2a9316ecfc902716676177c1/htmlunit-core-js-2.70.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-util/9.4.50.v20221201/92d86463bfca6241873679002ea2a012a0653990/jetty-util-9.4.50.v20221201.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.sourceforge.htmlunit/htmlunit-cssparser/1.14.0/c59d9383dc4c89a8f2146f296fdbcb6c5438a652/htmlunit-cssparser-1.14.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.virtuald/curvesapi/1.07/863654849995f9d4f0ed2ed1a3870da3a108473c/curvesapi-1.07.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.sourceforge.htmlunit/htmlunit-xpath/2.70.0/33454527e317ca2ec22e34fc5f7eaaf0399e8253/htmlunit-xpath-2.70.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty.websocket/websocket-common/9.4.50.v20221201/d48fe54eb5e89c5102ede1fd9d7b59b2b9615b97/websocket-common-9.4.50.v20221201.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.9.2/6f9f8621d8230cd38aa42e58ccbc0c00569131ce/junit-platform-commons-1.9.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-codec/commons-codec/1.15/49d94806b6e3dc933dacbd8acb0fdbab8ebd1e5d/commons-codec-1.15.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/net.sourceforge.htmlunit/htmlunit/2.70.0/4b068e6c05abb1740e8fabaf040e4eaf1e4c0e4d/htmlunit-2.70.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-net/commons-net/3.9.0/5a4e26802e0a5a42938f987976b55dae4a6cc636/commons-net-3.9.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-compress/1.21/4ec95b60d4e86b5c95a0e919cb172a0af98011ef/commons-compress-1.21.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-api/2.20.0/1fe6082e660daf07c689a89c94dc0f49c26b44bb/log4j-api-2.20.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.12.0/c6842c86792ff03b9f1d1fe2aab8dc23aa6c6f0e/commons-lang3-3.12.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.poi/poi/5.2.3/2fb22ae74ad5aea6af1a9c64b9542f2ccf348604/poi-5.2.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-core/2.20.0/eb2a9a47b1396e00b5eee1264296729a70565cc0/log4j-core-2.20.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.4.16/51cf043c87253c9f58b539c9f7e44c8894223850/httpcore-4.4.16.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.poi/poi-ooxml/5.2.3/2efd11c940adb18c03eb9ce7ad88fc40ee6a196/poi-ooxml-5.2.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.9.2/572f7a553b53f83ee59cc045ce1c3772864ab76c/junit-jupiter-engine-5.9.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-collections4/4.4/62ebe7544cb7164d87e0637a2a6a2bdc981395e8/commons-collections4-4.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty.websocket/websocket-api/9.4.50.v20221201/ee63cd762c3bf4ee8767a812d9d523b1a17bf78b/websocket-api-9.4.50.v20221201.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.shapesecurity/salvation2/3.0.1/3b0a94fe6fa2f248c95bcb1f342ceabdd5985427/salvation2-3.0.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-math3/3.6.1/e4ba98f1d4b3c80ec46392f25e094a6a2e58fcbf/commons-math3-3.6.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-http/9.4.50.v20221201/f025a779b60e276ee9e4edd03f7f6bf853ea0521/jetty-http-9.4.50.v20221201.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.brotli/dec/0.1.2/c26a897ae0d524809eef1c786cc6183b4ddcc3b/dec-0.1.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-client/9.4.50.v20221201/7b8fe98d34b9fc882572db4196698fda95c1847d/jetty-client-9.4.50.v20221201.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty.websocket/websocket-client/9.4.50.v20221201/92f544fa3fa330431f22840157cb7f0fd413e717/websocket-client-9.4.50.v20221201.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpmime/4.5.14/6662758a1f1cb1149cf916bdac28332e0902ec44/httpmime-4.5.14.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

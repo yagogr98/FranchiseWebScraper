@@ -34,3 +34,17 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    manifest {
+        attributes "Manifest-Version": "1.0",
+                "Main-Class": "webScraper.app.WebScraperMain"
+    }
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
+}
