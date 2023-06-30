@@ -296,7 +296,7 @@ public class WriterReader {
             for (Franquicia franquicia : franquicias) {
                 //Creamos linea con los datos de la franquicia
                 String linea = franquicia.getNombre() + Constants.SEPARADOR_DATOS + franquicia.getEnlaceInicio()
-                        + Constants.SEPARADOR_FRANQUICIAS;
+                        + Constants.SEPARADOR_FRANQUICIAS + System.getProperty("line.separator");
                 //escribimos linea
                 fileWriter.write(linea);
             }

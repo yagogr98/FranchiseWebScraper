@@ -29,7 +29,7 @@ public class WebScraperMain {
                     scraper.operar(Constants.GENERACION_LISTA, "");
                     break;
                 case Constants.LECTURA_LISTA:
-                    System.out.println("Introduzca dirección al archivo .csv");
+                    System.out.println("Introduzca la direccion del archivo .CSV");
 
                     entradaEscaner = new Scanner(System.in);
                     String param2 = entradaEscaner.nextLine();
@@ -46,22 +46,22 @@ public class WebScraperMain {
     }
 
     private static String mensajeBienvenida(){
-        return "--- FranchiseWebScraper ---" +
+        return "--------- FranchiseWebScraper ---------" +
                 System.getProperty("line.separator") +
                 System.getProperty("line.separator") +
-                "Introduzca 1 para leer lista de franquicias del directorio de la AEF " +
+                "- Introduzca 1 para leer la lista de franquicias del directorio de la AEF, " +
                 System.getProperty("line.separator") +
-                "analizar en busca de enlaces y por ultimo generar un archivo .xlsx con los datos." +
-                System.getProperty("line.separator") +
-                System.getProperty("line.separator") +
-                "Introduzca 2 para leer lista de franquicias del directorio de la AEF " +
-                System.getProperty("line.separator") +
-                "y posteriormente generar un archivo .csv con ella (No se analizan las franquicias)" +
+                "analizar en busca del numero de enlaces a RRSS y por ultimo generar un archivo .XLSX con los datos." +
                 System.getProperty("line.separator") +
                 System.getProperty("line.separator") +
-                "Introduzca 3 para leer un archivo .csv porporcionado por parámetro con una lista " +
+                "- Introduzca 2 para exportar en formato .CSV la lista de franquicias del directorio de la AEF " +
                 System.getProperty("line.separator") +
-                "de franquicias para ser analizado y posteriormente generar un .xlsx con los datos" +
+                "con sus correspondientes paginas web." +
+                System.getProperty("line.separator") +
+                System.getProperty("line.separator") +
+                "- Introduzca 3 para leer una lista de franquicias en formato .CSV proporcionando la ubicacion del archivo" +
+                System.getProperty("line.separator") +
+                "y posteriormente generar un .XLSX con los datos." +
                 System.getProperty("line.separator");
 
     }
