@@ -27,7 +27,10 @@ public  class Validator {
                 } catch (URISyntaxException e) {
                     return false;
                 } catch (IOException e) {
-                    return e.getMessage().contains("403");
+                    if( e.getMessage().contains("403")){
+                        return true;
+                    }
+                    return false;
                 }
             }
         }
