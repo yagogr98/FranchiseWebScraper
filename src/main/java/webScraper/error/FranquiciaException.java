@@ -6,6 +6,7 @@ package webScraper.error;
 public class FranquiciaException extends Exception {
     /**
      * Constructor
+     *
      * @param mensaje mensaje de excepcion
      */
     public FranquiciaException(String mensaje) {

@@ -1,6 +1,7 @@
 package webScraper.utils;
 
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import webScraper.beans.Franquicia;
 import webScraper.error.FranquiciaException;
 
@@ -8,8 +9,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class WriterReader {
     private final static Logger LOGGER = Logger.getLogger(WriterReader.class.getName());
@@ -22,15 +21,16 @@ public class WriterReader {
      * @param franquicias lista
      * @throws FranquiciaException error al escribir excel
      */
-    public static void writeExcel(List<Franquicia> franquicias, List<Franquicia> franquiciasConErrores) throws FranquiciaException {
-       LOGGER.info("Iniciando escritura Excel");
+    public static void writeExcel(List<Franquicia> franquicias, List<Franquicia> franquiciasConErrores)
+            throws FranquiciaException {
+        LOGGER.info("Iniciando escritura Excel");
         libro = new XSSFWorkbook();
         final String nombreArchivo = "Franquicias.xlsx";
         Sheet hoja = libro.createSheet("Resultados");
         crearCabecera(hoja);
         rellenarFilas(hoja, franquicias);
-        crearCabeceraError(hoja,franquicias.size());
-        rellenarFilasErrores(hoja,franquiciasConErrores, franquicias.size());
+        crearCabeceraError(hoja, franquicias.size());
+        rellenarFilasErrores(hoja, franquiciasConErrores, franquicias.size());
 
         File directory = new File(".");
         String path = directory.getAbsolutePath();
@@ -100,7 +100,7 @@ public class WriterReader {
     /**
      * rellena fila con franquicias
      *
-     * @param hoja excel
+     * @param hoja        excel
      * @param franquicias lista
      */
     private static void rellenarFilas(Sheet hoja, List<Franquicia> franquicias) {
@@ -150,13 +150,12 @@ public class WriterReader {
     }
 
 
-
     /**
      * Crea cabecera de excel
      *
      * @param hoja excel
      */
-    private static void crearCabeceraError(Sheet hoja,int franquicias) {
+    private static void crearCabeceraError(Sheet hoja, int franquicias) {
         //Estilo
         //Estilo
         CellStyle estilo = libro.createCellStyle();
@@ -173,7 +172,7 @@ public class WriterReader {
         estilo.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 
         //Cabecera
-        Row primeraFila = hoja.createRow(franquicias+3);
+        Row primeraFila = hoja.createRow(franquicias + 3);
         Cell nombre = primeraFila.createCell(0);
         nombre.setCellValue("Errores:");
         nombre.setCellStyle(estilo);
@@ -185,11 +184,11 @@ public class WriterReader {
     /**
      * rellena filas con franquicias que no han podido cargar
      *
-     * @param hoja excel
+     * @param hoja               excel
      * @param franquiciasErrores lista
      */
     private static void rellenarFilasErrores(Sheet hoja, List<Franquicia> franquiciasErrores, int numeroTotal) {
-        int num_fila = numeroTotal +3;
+        int num_fila = numeroTotal + 3;
         CellStyle estilo = estiloCuerpoError();
 
         for (Franquicia f : franquiciasErrores) {

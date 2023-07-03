@@ -4,23 +4,26 @@ import webScraper.error.FranquiciaException;
 import webScraper.negocio.Scraper;
 import webScraper.utils.Constants;
 
-
 import java.util.Scanner;
-import java.util.logging.*;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  */
 public class WebScraperMain {
     private final static Logger LOGGER = Logger.getGlobal();
+
     public static void main(String[] args) {
         initializeLog();
         Scraper scraper = new Scraper();
         try {
             System.out.println(mensajeBienvenida());
             String param1;
-            Scanner entradaEscaner = new Scanner (System.in);
-            param1 = entradaEscaner.nextLine ();
+            Scanner entradaEscaner = new Scanner(System.in);
+            param1 = entradaEscaner.nextLine();
             switch (param1) {
                 case Constants.GENERACION_TOTAL:
                     scraper.operar(Constants.GENERACION_TOTAL, "");
@@ -45,7 +48,7 @@ public class WebScraperMain {
         }
     }
 
-    private static String mensajeBienvenida(){
+    private static String mensajeBienvenida() {
         return "--------- FranchiseWebScraper ---------" +
                 System.getProperty("line.separator") +
                 System.getProperty("line.separator") +
@@ -59,12 +62,14 @@ public class WebScraperMain {
                 "con sus correspondientes paginas web." +
                 System.getProperty("line.separator") +
                 System.getProperty("line.separator") +
-                "- Introduzca 3 para leer una lista de franquicias en formato .CSV proporcionando la ubicacion del archivo" +
+                "- Introduzca 3 para leer una lista de franquicias en formato .CSV proporcionando la ubicacion " +
+                "del archivo" +
                 System.getProperty("line.separator") +
                 "y posteriormente generar un .XLSX con los datos." +
                 System.getProperty("line.separator");
 
     }
+
     /**
      * Inicializa el Log
      */
@@ -73,9 +78,8 @@ public class WebScraperMain {
 
         LOGGER.setUseParentHandlers(false);
         Handler[] handlers = LOGGER.getHandlers();
-        for(Handler handler : handlers)
-        {
-            if(handler.getClass() == ConsoleHandler.class)
+        for (Handler handler : handlers) {
+            if (handler.getClass() == ConsoleHandler.class)
                 LOGGER.removeHandler(handler);
         }
 

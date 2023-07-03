@@ -30,7 +30,7 @@ public class Franquicia {
     /**
      * Constructor
      *
-     * @param nombre nombre de la franquicia
+     * @param nombre       nombre de la franquicia
      * @param enlaceInicio url a la web
      */
     public Franquicia(String nombre, String enlaceInicio) {
@@ -82,29 +82,13 @@ public class Franquicia {
     }
 
     /**
-     *
      * @return enlaces en pagina contacto
      */
     public int getNumEnlacesContactoFacebook() {
         return numEnlacesContactoFacebook;
     }
-    /**
-     *
-     * @return enlaces en pagina contacto
-     */
-    public int getNumEnlacesContactoInstagram() {
-        return numEnlacesContactoInstagram;
-    }
-    /**
-     *
-     * @return enlaces en pagina contacto
-     */
-    public int getNumEnlacesContactoTwitter() {
-        return numEnlacesContactoTwitter;
-    }
 
     /**
-     *
      * @param numEnlacesContactoFacebook numero de enlaces a red social
      */
     public void setNumEnlacesContactoFacebook(int numEnlacesContactoFacebook) {
@@ -112,7 +96,13 @@ public class Franquicia {
     }
 
     /**
-     *
+     * @return enlaces en pagina contacto
+     */
+    public int getNumEnlacesContactoInstagram() {
+        return numEnlacesContactoInstagram;
+    }
+
+    /**
      * @param numEnlacesContactoInstagram numero de enlaces a red social
      */
     public void setNumEnlacesContactoInstagram(int numEnlacesContactoInstagram) {
@@ -120,7 +110,13 @@ public class Franquicia {
     }
 
     /**
-     *
+     * @return enlaces en pagina contacto
+     */
+    public int getNumEnlacesContactoTwitter() {
+        return numEnlacesContactoTwitter;
+    }
+
+    /**
      * @param numEnlacesContactoTwitter numero de enlaces a red social
      */
     public void setNumEnlacesContactoTwitter(int numEnlacesContactoTwitter) {
@@ -128,7 +124,6 @@ public class Franquicia {
     }
 
     /**
-     *
      * @return numero de enlaces a red social
      */
     public int getNumEnlacesInicioFacebook() {
@@ -136,23 +131,6 @@ public class Franquicia {
     }
 
     /**
-     *
-     * @return numero de enlaces a red social
-     */
-    public int getNumEnlacesInicioInstagram() {
-        return numEnlacesInicioInstagram;
-    }
-
-    /**
-     *
-     * @return numero de enlaces a red social
-     */
-    public int getNumEnlacesInicioTwitter() {
-        return numEnlacesInicioTwitter;
-    }
-
-    /**
-     *
      * @param numEnlacesInicioFacebook numero de enlaces a red social
      */
     public void setNumEnlacesInicioFacebook(int numEnlacesInicioFacebook) {
@@ -160,7 +138,13 @@ public class Franquicia {
     }
 
     /**
-     *
+     * @return numero de enlaces a red social
+     */
+    public int getNumEnlacesInicioInstagram() {
+        return numEnlacesInicioInstagram;
+    }
+
+    /**
      * @param numEnlacesInicioInstagram numero de enlaces a red social
      */
     public void setNumEnlacesInicioInstagram(int numEnlacesInicioInstagram) {
@@ -168,7 +152,13 @@ public class Franquicia {
     }
 
     /**
-     *
+     * @return numero de enlaces a red social
+     */
+    public int getNumEnlacesInicioTwitter() {
+        return numEnlacesInicioTwitter;
+    }
+
+    /**
      * @param numEnlacesInicioTwitter numero de enlaces a red social
      */
     public void setNumEnlacesInicioTwitter(int numEnlacesInicioTwitter) {
@@ -176,7 +166,6 @@ public class Franquicia {
     }
 
     /**
-     *
      * @return numero de enlaces a red social
      */
     public HtmlPage getPaginaContacto() {
@@ -184,15 +173,6 @@ public class Franquicia {
     }
 
     /**
-     *
-     * @return numero de enlaces a red social
-     */
-    public HtmlPage getPaginaInicio() {
-        return paginaInicio;
-    }
-
-    /**
-     *
      * @param paginaContacto numero de enlaces a red social
      */
     public void setPaginaContacto(HtmlPage paginaContacto) {
@@ -200,7 +180,13 @@ public class Franquicia {
     }
 
     /**
-     *
+     * @return numero de enlaces a red social
+     */
+    public HtmlPage getPaginaInicio() {
+        return paginaInicio;
+    }
+
+    /**
      * @param paginaInicio numero de enlaces a red social
      */
     public void setPaginaInicio(HtmlPage paginaInicio) {
@@ -210,69 +196,67 @@ public class Franquicia {
     /**
      * anade un enlace a inicio
      */
-    public void addNumEnlacesInicioTwitter(){
-        setNumEnlacesInicioTwitter(getNumEnlacesInicioTwitter()+1);
+    public void addNumEnlacesInicioTwitter() {
+        setNumEnlacesInicioTwitter(getNumEnlacesInicioTwitter() + 1);
     }
 
     /**
      * anade un enlace a inicio
      */
-    public void addNumEnlacesInicioFacebook(){
-        setNumEnlacesInicioFacebook(getNumEnlacesInicioFacebook()+1);
+    public void addNumEnlacesInicioFacebook() {
+        setNumEnlacesInicioFacebook(getNumEnlacesInicioFacebook() + 1);
     }
 
     /**
-     *  anade un enlace a inicio
+     * anade un enlace a inicio
      */
-    public void addNumEnlacesInicioInstagram(){
-        setNumEnlacesInicioInstagram(getNumEnlacesInicioInstagram()+1);
+    public void addNumEnlacesInicioInstagram() {
+        setNumEnlacesInicioInstagram(getNumEnlacesInicioInstagram() + 1);
     }
 
     /**
      * anade un enlace a contacto
      */
-    public void addNumEnlacesContactoTwitter(){
-        setNumEnlacesContactoTwitter(getNumEnlacesContactoTwitter()+1);
-    }
-    /**
-     * anade un enlace a contacto
-     */
-    public void addNumEnlacesContactoFacebook(){
-        setNumEnlacesContactoFacebook(getNumEnlacesContactoFacebook()+1);
-    }
-    /**
-     * anade un enlace a contacto
-     */
-    public void addNumEnlacesContactoInstagram(){
-        setNumEnlacesContactoInstagram(getNumEnlacesContactoInstagram()+1);
+    public void addNumEnlacesContactoTwitter() {
+        setNumEnlacesContactoTwitter(getNumEnlacesContactoTwitter() + 1);
     }
 
     /**
-     *
+     * anade un enlace a contacto
+     */
+    public void addNumEnlacesContactoFacebook() {
+        setNumEnlacesContactoFacebook(getNumEnlacesContactoFacebook() + 1);
+    }
+
+    /**
+     * anade un enlace a contacto
+     */
+    public void addNumEnlacesContactoInstagram() {
+        setNumEnlacesContactoInstagram(getNumEnlacesContactoInstagram() + 1);
+    }
+
+    /**
      * @return enlaces totales twitter
      */
-    public int getEnlacesTwitter(){
-        return getNumEnlacesContactoTwitter()+getNumEnlacesInicioTwitter();
+    public int getEnlacesTwitter() {
+        return getNumEnlacesContactoTwitter() + getNumEnlacesInicioTwitter();
     }
 
     /**
-     *
      * @return enlaces totales instagram
      */
-    public int getEnlacesInstagram(){
-        return getNumEnlacesContactoInstagram()+getNumEnlacesInicioInstagram();
+    public int getEnlacesInstagram() {
+        return getNumEnlacesContactoInstagram() + getNumEnlacesInicioInstagram();
     }
 
     /**
-     *
      * @return enlaces totales facebook
      */
-    public int getEnlacesFacebook(){
-        return getNumEnlacesContactoFacebook()+getNumEnlacesInicioFacebook();
+    public int getEnlacesFacebook() {
+        return getNumEnlacesContactoFacebook() + getNumEnlacesInicioFacebook();
     }
 
     /**
-     *
      * @param franquicia parametro
      * @return Igual o no
      */
@@ -281,11 +265,11 @@ public class Franquicia {
         if (this == franquicia) return true;
         if (franquicia == null || getClass() != franquicia.getClass()) return false;
         Franquicia that = (Franquicia) franquicia;
-        return nombre.equals(that.nombre) && Objects.equals(enlaceInicio, that.enlaceInicio) && Objects.equals(enlaceContacto, that.enlaceContacto);
+        return nombre.equals(that.nombre) && Objects.equals(enlaceInicio, that.enlaceInicio)
+                && Objects.equals(enlaceContacto, that.enlaceContacto);
     }
 
     /**
-     *
      * @return hashCode
      */
     @Override

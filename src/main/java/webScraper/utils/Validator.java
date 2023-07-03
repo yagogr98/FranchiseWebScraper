@@ -2,19 +2,19 @@ package webScraper.utils;
 
 import java.io.IOException;
 import java.net.*;
-import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public  class Validator {
+public class Validator {
     public static boolean validateURL(String url) {
 
-        if(isNotNull(url)) {
+        if (isNotNull(url)) {
             Pattern patt = Pattern.compile(Constants.REGEX_URL);
             Matcher matcher = patt.matcher(url);
-            if(matcher.matches()) {
+            if (matcher.matches()) {
                 try {
-                   URI uri = new URL(url).toURI();
-                    if(uri.getHost()==null){
+                    URI uri = new URL(url).toURI();
+                    if (uri.getHost() == null) {
                         return false;
                     }
                     URLConnection con = new URL(url).openConnection();
@@ -27,17 +27,14 @@ public  class Validator {
                 } catch (URISyntaxException e) {
                     return false;
                 } catch (IOException e) {
-                    if( e.getMessage().contains("403")){
-                        return true;
-                    }
-                    return false;
+                    return e.getMessage().contains("403");
                 }
             }
         }
         return false;
     }
 
-    public static boolean isNotNull(Object object){
+    public static boolean isNotNull(Object object) {
         return object != null;
     }
 }

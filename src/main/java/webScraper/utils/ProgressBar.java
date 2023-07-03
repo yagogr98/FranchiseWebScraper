@@ -1,20 +1,19 @@
 package webScraper.utils;
 
 public class ProgressBar {
-    private String mensaje;
-    private int parcial;
-    private int total;
-
-    private int anterior;
-
     private final char VACIO = '-';
     private final String LLENO = "X";
     private final int maximo = 10;
+    private String mensaje;
+    private int parcial;
+    private int total;
+    private int anterior;
 
     /**
      * Constructor
+     *
      * @param mensaje a mostrar
-     * @param total de valores
+     * @param total   de valores
      */
     public ProgressBar(String mensaje, int total) {
         this.mensaje = mensaje;
@@ -24,6 +23,7 @@ public class ProgressBar {
 
     /**
      * Constructor
+     *
      * @param mensaje a mostrar
      */
     public ProgressBar(String mensaje) {
@@ -35,15 +35,14 @@ public class ProgressBar {
     /**
      * Devuelve por consola (si es necesario) la ultima actualizacion
      * de la barra de progreso
-     *
      */
-    public void getSumaTotal(){
-        if(parcial<total){
+    public void getSumaTotal() {
+        if (parcial < total) {
             parcial++;
         }
 
-        int progreso = Math.round(((100f *parcial)/total)/maximo);
-        if(anterior<=progreso || anterior==0) {
+        int progreso = Math.round(((100f * parcial) / total) / maximo);
+        if (anterior <= progreso || anterior == 0) {
             anterior++;
 
             int faltante = maximo - progreso;
@@ -65,7 +64,6 @@ public class ProgressBar {
     }
 
     /**
-     *
      * @return parcial
      */
     public int getParcial() {
@@ -73,7 +71,6 @@ public class ProgressBar {
     }
 
     /**
-     *
      * @param parcial momentaneo
      */
     public void setParcial(int parcial) {
@@ -81,7 +78,6 @@ public class ProgressBar {
     }
 
     /**
-     *
      * @return total
      */
     public int getTotal() {
@@ -89,7 +85,6 @@ public class ProgressBar {
     }
 
     /**
-     *
      * @param total valor total maximo
      */
     public void setTotal(int total) {
@@ -97,7 +92,6 @@ public class ProgressBar {
     }
 
     /**
-     *
      * @return devuelve el mensaje
      */
     public String getMensaje() {
@@ -105,7 +99,6 @@ public class ProgressBar {
     }
 
     /**
-     *
      * @param mensaje a mostrar
      */
     public void setMensaje(String mensaje) {
@@ -113,7 +106,6 @@ public class ProgressBar {
     }
 
     /**
-     *
      * @return devuelve ultimo parcial valido
      */
     public int getAnterior() {
@@ -121,7 +113,6 @@ public class ProgressBar {
     }
 
     /**
-     *
      * @param anterior ultimo parcial valido
      */
     public void setAnterior(int anterior) {
